@@ -9,8 +9,15 @@ router
   })
   .on('/:page', (params) => {
     const el = document.getElementById('main');
-    import(`./pages/${params.page}.html`).then(pageContent => {
-      el.innerHTML = pageContent.default;
+    Promise.all([
+      import(`./pages/${params.page}.js`),
+      import(`./pages/${params.page}.html`)
+    ])
+    .then(([jsPage, template]) => {
+      const element = document.createElement('div');
+      element.innerHTML = template.default;
+      el.appendChild(element);
+      jsPage.render(element);
     }, error => {
       el.innerHTML = `
       <div class="notification is-danger">
