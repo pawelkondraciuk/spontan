@@ -41,7 +41,6 @@ module.exports = {
         function readFromLocalStorage() {
             rows = JSON.parse(localStorage.getItem('rows')) || [];
             createTable(rows);
-            getId();
         }
 
         readFromLocalStorage()
