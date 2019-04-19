@@ -7,18 +7,18 @@ module.exports = {
 
         const questions = JSON.parse(localStorage.getItem('questions')) || [];
 
-        function createInputEl() {
-            const inputHTML = `<input class="input is-large" type="text" placeholder="Nazwa kategorii">`;
-            const inputEl = document.createElement('div');
-            inputEl.classList.add('control');
-            inputEl.innerHTML = inputHTML;
-            return inputEl
-        }
+        // function createInputEl() {
+        //     const inputHTML = `<input class="input is-large" type="text" placeholder="Nazwa kategorii">`;
+        //     const inputEl = document.createElement('div');
+        //     inputEl.classList.add('control');
+        //     inputEl.innerHTML = inputHTML;
+        //     return inputEl
+        // }
 
-        function addInputEl() {
-            const newInput = createInputEl();
-            inputField.appendChild(newInput);
-        }
+        // function addInputEl() {
+        //     const newInput = createInputEl();
+        //     inputField.appendChild(newInput);
+        // }
 
         function removeQuestion(question) {
             const idx = questions.indexOf(question);
@@ -80,6 +80,11 @@ module.exports = {
                 addNewQuestion()
             }
         })
+
+
+
+
+
 
         submitBtn.addEventListener('click', () => {
             localStorage.setItem('questions', JSON.stringify(questions));
