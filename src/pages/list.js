@@ -1,7 +1,6 @@
 module.exports = {
     render: () => {
         const tableBody = document.querySelector('tbody');
-        const newTournamentBtn = document.querySelector('#add-tournament');
 
         let rows = [];
 
@@ -44,9 +43,6 @@ module.exports = {
             createTable(rows);
         }
 
-        newTournamentBtn.addEventListener('click', () => {
-            window.location.href = '/#/new';
-        })
         readFromLocalStorage()
     },
 }
