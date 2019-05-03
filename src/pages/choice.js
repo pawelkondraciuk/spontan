@@ -41,7 +41,14 @@ module.exports = {
         const sortableLeft = Sortable.create(elLeft, {
             group: 'questions',
             animation: 150,
-            onEnd: (e) => {
+            // onUpdate: (e) => {
+            //     const {
+            //         newIndex,
+            //         oldIndex
+            //     } = e;
+            //     questionsList[oldIndex] = questionsList.splice(newIndex, 1, questionsList[oldIndex])[0];
+            // },
+            onRemove: (e) => {
                 const {
                     newIndex,
                     item
@@ -50,7 +57,8 @@ module.exports = {
                 const newQuestion = item.querySelector('.card-content').textContent.trim();
                 activePhaseQuestions.splice(newIndex, 0, newQuestion);
                 console.log(e)
-            }
+            },
+
         });
         const sortableRight = Sortable.create(elRight, {
             group: 'questions',
@@ -62,8 +70,14 @@ module.exports = {
                 } = e;
                 const activePhaseQuestions = selectedQuestions[activePhase];
                 activePhaseQuestions[oldIndex] = activePhaseQuestions.splice(newIndex, 1, activePhaseQuestions[oldIndex])[0];
+            },
+            onRemove: (e) => {
+                const {
+                    oldIndex,
+                } = e;
+                const activePhaseQuestions = selectedQuestions[activePhase];
+                activePhaseQuestions.splice(oldIndex, 1)
             }
-
         });
 
         const questionsList = [
@@ -89,7 +103,7 @@ module.exports = {
             final: [],
         }
 
-        renderQuestions(elLeft, questionsList)
+        renderQuestions(elLeft, questionsList);
         selectPhase('qualifications')
 
         for (const tabButton of tabButtons) {
