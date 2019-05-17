@@ -80,26 +80,12 @@ module.exports = {
             }
         });
 
-        const questionsList = [
-            'pytanie1',
-            'pytanie2',
-            'pytanie3',
-            'pytanie4',
-            'pytanie5'
-        ];
+        const questionsList = JSON.parse(localStorage.getItem('questions')) || [];
 
         const selectedQuestions = {
-            qualifications: [
-                'a',
-                'b',
-                'c',
-            ],
-            quarterFinals: [
-                'sad'
-            ],
-            semiFinals: [
-                'fs'
-            ],
+            qualifications: [],
+            quarterFinals: [],
+            semiFinals: [],
             final: [],
         }
 
