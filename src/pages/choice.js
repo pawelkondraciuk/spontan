@@ -1,6 +1,12 @@
 const Sortable = require('sortablejs');
+const utils = require('../utils');
+
 module.exports = {
     render: () => {
+        const searchParams = new URLSearchParams(utils.getParams());
+        const id = searchParams.get('id');
+        const tournament = getTournament();
+
         function createCard(question) {
             const elHTML = ` 
             <div class="card">
@@ -31,6 +37,11 @@ module.exports = {
                 oldTabBtn.parentElement.classList.remove('is-active');
             }
             activePhase = phase;
+        }
+
+        function getTournament() {
+            const tournaments = utils.read('rows');
+            return tournaments.find(value => value.id === id);
         }
 
         const elLeft = document.querySelector('.left-column');
@@ -79,8 +90,7 @@ module.exports = {
                 activePhaseQuestions.splice(oldIndex, 1)
             }
         });
-
-        const questionsList = JSON.parse(localStorage.getItem('questions')) || [];
+        const questionsList = tournament.questions;
 
         const selectedQuestions = {
             qualifications: [],
@@ -88,6 +98,8 @@ module.exports = {
             semiFinals: [],
             final: [],
         }
+
+        tournament.selectedQuestions = selectedQuestions;
 
         renderQuestions(elLeft, questionsList);
         selectPhase('qualifications')

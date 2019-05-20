@@ -1,3 +1,5 @@
+const utils = require('../utils');
+
 module.exports = {
     render: () => {
         const tableBody = document.querySelector('tbody');
@@ -5,22 +7,17 @@ module.exports = {
         let rows = [];
 
         function createTr(row) {
+const trHTML = `
+    <th>
+        <a href="/#/choice?id=${row.id}">${row.name}</a>
+    </th>
+    <td>${row.players.length}</td>
+    <td>${row.status}</td>
+`
+
             const tableTr = document.createElement('tr');
-            const trId = document.createElement('th');
-            const trName = document.createElement('td');
-            const trPlayer = document.createElement('td');
-            const trStatus = document.createElement('td');
 
-            trId.textContent = row.id;
-            trName.textContent = row.name;
-            trPlayer.textContent = row.players.length;
-            trStatus.innerHTML = row.status;
-
-            tableTr.appendChild(trId);
-            tableTr.appendChild(trName);
-            tableTr.appendChild(trPlayer);
-            tableTr.appendChild(trStatus);
-
+            tableTr.innerHTML = trHTML;
             return tableTr
         }
 
@@ -39,7 +36,7 @@ module.exports = {
         }
 
         function readFromLocalStorage() {
-            rows = JSON.parse(localStorage.getItem('rows')) || [];
+            rows = utils.read('rows') || [];
             createTable(rows);
         }
 

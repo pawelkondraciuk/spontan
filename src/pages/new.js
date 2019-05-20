@@ -1,3 +1,5 @@
+const utils = require('../utils');
+
 module.exports = {
   render: (element) => {
     const field = element.querySelector('#field');
@@ -12,8 +14,6 @@ module.exports = {
     function getTournamentName() {
       return inputTournament.value;
     }
-
-
 
     function addPlayer(name) {
       const player = {
@@ -56,7 +56,6 @@ module.exports = {
       buttonEl.addEventListener('click', onButtonClick);
 
       return fieldEl;
-
     }
 
     function getPlayerName() {
@@ -80,16 +79,31 @@ module.exports = {
 
     addBtn.addEventListener('click', onAddButtonClick);
 
-    function saveToLocalStorage() {
-      const rows = JSON.parse(localStorage.getItem('rows')) || [];
-      rows.push({
-        id: 1,
-        name: getTournamentName(),
-        players: players,
-        status: 'w trakcie'
-      });
-      localStorage.setItem('rows', JSON.stringify(rows));
+    function getSelectedQuestions() {
+      const questionNodeList = document.querySelectorAll('input[type=checkbox]');
+      const questionInputs = Array
+        .from(questionNodeList)
+        .filter(value => value.checked)
+        .map(value => value.nextSibling)
+        .map(nextSibling => nextSibling.textContent)
+        .map(textContent => textContent.trim())
+      return questionInputs;
 
+    }
+
+    function saveToLocalStorage() {
+      const questions = getSelectedQuestions();
+
+      const rows = utils.read('rows') || [];
+      const obj = utils.create({
+        name: getTournamentName(),
+        players,
+        questions,
+        status: 'w trakcie'
+      })
+      rows.push(obj);
+      utils.save('rows', rows);
+      window.location.href = '/#/list';
     }
 
     submitBtn.addEventListener('click', saveToLocalStorage);

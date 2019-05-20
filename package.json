@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "navigo": "^7.1.2",
-    "sortablejs": "^1.9.0"
+    "sortablejs": "^1.9.0",
+    "uuid": "^3.3.2"
   }
 }
