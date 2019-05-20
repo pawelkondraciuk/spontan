@@ -3,7 +3,7 @@ module.exports = {
     const field = element.querySelector('#field');
     const inputPlayer = element.querySelector('#player');
     const inputTournament = element.querySelector('#tournament-name');
-    const inputQuestions = document.querySelector('#tournament-questions');
+    const questionsField = element.querySelector('#questions');
     const addBtn = element.querySelector('#add');
     const submitBtn = element.querySelector('#submit');
 
@@ -13,9 +13,7 @@ module.exports = {
       return inputTournament.value;
     }
 
-    function getTournamentQuestions() {
-      return inputQuestions.value;
-    }
+
 
     function addPlayer(name) {
       const player = {
@@ -71,7 +69,14 @@ module.exports = {
       }
       addPlayer(getPlayerName());
       inputPlayer.value = '';
+      inputPlayer.focus();
     }
+
+    inputPlayer.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        onAddButtonClick()
+      }
+    })
 
     addBtn.addEventListener('click', onAddButtonClick);
 
@@ -84,9 +89,33 @@ module.exports = {
         status: 'w trakcie'
       });
       localStorage.setItem('rows', JSON.stringify(rows));
-      localStorage.setItem('questions', JSON.stringify(getTournamentQuestions()))
+
     }
 
     submitBtn.addEventListener('click', saveToLocalStorage);
+
+
+    function createCheckbox(question) {
+      const checkboxHTML = `
+      <label class="checkbox">
+       <input type="checkbox">
+       ${question}
+      </label>`;
+
+      const fieldEl = document.createElement('div');
+      fieldEl.innerHTML = checkboxHTML;
+      return fieldEl
+    }
+
+    function addCheckbox(question) {
+      const fieldEl = createCheckbox(question);
+      questionsField.appendChild(fieldEl);
+    }
+
+    function readFromLocalStorage() {
+      const questions = JSON.parse(localStorage.getItem('questions')) || [];
+      questions.forEach(question => addCheckbox(question));
+    }
+    readFromLocalStorage()
   },
 }
