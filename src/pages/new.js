@@ -79,6 +79,23 @@ module.exports = {
 
     addBtn.addEventListener('click', onAddButtonClick);
 
+
+    document.querySelector('#select-all').addEventListener('click', () => {
+      const questionNodeList = document.querySelectorAll('input[type=checkbox]');
+      const hasAllCheckedInput = Array
+        .from(questionNodeList)
+        .every(value => value.checked);
+     for(const input of questionNodeList) {
+      //  if(hasAllCheckedInput) {
+      //    input.checked = false
+      //  } else {
+      //    input.checked = true
+      //  }
+       input.checked = !hasAllCheckedInput;
+     }
+
+    });
+
     function getSelectedQuestions() {
       const questionNodeList = document.querySelectorAll('input[type=checkbox]');
       const questionInputs = Array

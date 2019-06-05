@@ -28,7 +28,7 @@ module.exports = {
         }
 
         function selectPhase(phase) {
-            const questions = selectedQuestions[phase];
+            const questions = tournament.selectedQuestions[phase];
             renderQuestions(elRight, questions);
             const tabBtn = document.querySelector(`[data-at="${phase}"]`);
             tabBtn.parentElement.classList.add('is-active');
@@ -44,6 +44,28 @@ module.exports = {
             return tournaments.find(value => value.id === id);
         }
 
+        function saveTournament() {
+        // tutaj
+            const tournaments = utils.read('rows');
+            const tournamentIdx = tournaments.findIndex(value => value.id === id);
+            tournaments[tournamentIdx] = tournament;
+            utils.save('rows', tournaments)
+        }
+
+        function renderLeftColumn() {
+            const selectedQuestions = tournament.selectedQuestions;
+            const {qualifications,
+                quarterFinals,
+                semiFinals,
+                final} = selectedQuestions;
+
+            const filteredQ = tournament.questions
+                .filter(value => !qualifications.includes(value))
+                .filter(value => !quarterFinals.includes(value))
+                .filter(value => !semiFinals.includes(value))
+                .filter(value => !final.includes(value));
+            renderQuestions(elLeft, filteredQ)
+        }
         const elLeft = document.querySelector('.left-column');
         const elRight = document.querySelector('.right-column');
         const tabButtons = document.querySelectorAll('.tabs a');
@@ -64,7 +86,7 @@ module.exports = {
                     newIndex,
                     item
                 } = e;
-                const activePhaseQuestions = selectedQuestions[activePhase];
+                const activePhaseQuestions = tournament.selectedQuestions[activePhase];
                 const newQuestion = item.querySelector('.card-content').textContent.trim();
                 activePhaseQuestions.splice(newIndex, 0, newQuestion);
                 console.log(e)
@@ -79,29 +101,27 @@ module.exports = {
                     newIndex,
                     oldIndex
                 } = e;
-                const activePhaseQuestions = selectedQuestions[activePhase];
+                const activePhaseQuestions = tournament.selectedQuestions[activePhase];
                 activePhaseQuestions[oldIndex] = activePhaseQuestions.splice(newIndex, 1, activePhaseQuestions[oldIndex])[0];
             },
             onRemove: (e) => {
                 const {
                     oldIndex,
                 } = e;
-                const activePhaseQuestions = selectedQuestions[activePhase];
+                const activePhaseQuestions = tournament.selectedQuestions[activePhase];
                 activePhaseQuestions.splice(oldIndex, 1)
             }
         });
-        const questionsList = tournament.questions;
 
-        const selectedQuestions = {
+
+        tournament.selectedQuestions = tournament.selectedQuestions || {
             qualifications: [],
             quarterFinals: [],
             semiFinals: [],
             final: [],
-        }
+        };
 
-        tournament.selectedQuestions = selectedQuestions;
-
-        renderQuestions(elLeft, questionsList);
+        renderLeftColumn();
         selectPhase('qualifications')
 
         for (const tabButton of tabButtons) {
@@ -113,5 +133,10 @@ module.exports = {
             })
         }
 
+        const saveBtn = document.querySelector('.button');
+        saveBtn.addEventListener('click', saveTournament)
+
     }
 }
+
+// sprawdzić czy każda faza ma przynajmniej jedno pytanie
