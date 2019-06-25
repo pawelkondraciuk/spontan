@@ -1,3 +1,5 @@
+const utils = require('../utils');
+
 module.exports = {
     render: () => {
         const inputField = document.querySelector('#question');
@@ -5,7 +7,7 @@ module.exports = {
         const questionsEl = document.querySelector('#questions');
         const submitBtn = document.querySelector('#submit');
 
-        const questions = JSON.parse(localStorage.getItem('questions')) || [];
+        const questions = utils.read('questions') || [];
 
         // function createInputEl() {
         //     const inputHTML = `<input class="input is-large" type="text" placeholder="Nazwa kategorii">`;
@@ -87,7 +89,8 @@ module.exports = {
 
 
         submitBtn.addEventListener('click', () => {
-            localStorage.setItem('questions', JSON.stringify(questions));
+            utils.save('questions', questions);
+            // localStorage.setItem('questions', JSON.stringify(questions));
             window.location.href = '/#/list';
         })
         for (const question of questions) {

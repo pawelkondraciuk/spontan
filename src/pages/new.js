@@ -85,14 +85,14 @@ module.exports = {
       const hasAllCheckedInput = Array
         .from(questionNodeList)
         .every(value => value.checked);
-     for(const input of questionNodeList) {
-      //  if(hasAllCheckedInput) {
-      //    input.checked = false
-      //  } else {
-      //    input.checked = true
-      //  }
-       input.checked = !hasAllCheckedInput;
-     }
+      for (const input of questionNodeList) {
+        //  if(hasAllCheckedInput) {
+        //    input.checked = false
+        //  } else {
+        //    input.checked = true
+        //  }
+        input.checked = !hasAllCheckedInput;
+      }
 
     });
 
@@ -144,7 +144,7 @@ module.exports = {
     }
 
     function readFromLocalStorage() {
-      const questions = JSON.parse(localStorage.getItem('questions')) || [];
+      const questions = utils.read('questions') || [];
       questions.forEach(question => addCheckbox(question));
     }
     readFromLocalStorage()

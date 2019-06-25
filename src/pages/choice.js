@@ -45,19 +45,29 @@ module.exports = {
         }
 
         function saveTournament() {
-        // tutaj
-            const tournaments = utils.read('rows');
-            const tournamentIdx = tournaments.findIndex(value => value.id === id);
-            tournaments[tournamentIdx] = tournament;
-            utils.save('rows', tournaments)
+            // tutaj
+            if (tournament.selectedQuestions.qualifications.length === 0 ||
+                tournament.selectedQuestions.quarterFinals.length === 0 ||
+                tournament.selectedQuestions.semiFinals.length === 0 ||
+                tournament.selectedQuestions.final.length === 0) {
+                window.alert("Nie wszystkie fazy turnieju zawierają pytania!");
+            } else {
+                const tournaments = utils.read('rows');
+                const tournamentIdx = tournaments.findIndex(value => value.id === id);
+                tournaments[tournamentIdx] = tournament;
+                utils.save('rows', tournaments);
+                window.location.href = `/#/pairs?id=${id}`;
+            }
         }
 
         function renderLeftColumn() {
             const selectedQuestions = tournament.selectedQuestions;
-            const {qualifications,
+            const {
+                qualifications,
                 quarterFinals,
                 semiFinals,
-                final} = selectedQuestions;
+                final
+            } = selectedQuestions;
 
             const filteredQ = tournament.questions
                 .filter(value => !qualifications.includes(value))
