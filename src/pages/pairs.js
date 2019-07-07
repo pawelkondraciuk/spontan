@@ -26,42 +26,65 @@ module.exports = {
             }
         }
 
+        function renderPairs(tournament) {
+            if (!tournament.pairs) {
+                return;
+            }
+            const [playersA, playersB] = tournament.pairs;
+            renderPlayers(playersAEl, playersA);
+            renderPlayers(playersBEl, playersB);
+        }
+
         function getTournament() {
             const tournaments = utils.read('rows');
             return tournaments.find(value => value.id === id);
         }
 
-        const playersContainer = document.querySelector('#list');
-        const players = tournament.players
-
-        renderPlayers(playersContainer, players)
-
-
-        const drawBtn = document.querySelector('.button')
-        let drawArray = []
-
-        function draw() {
-            let array = players;
-            const pairs = document.querySelector('#pairs');
-
-            while (array.length > 0) {
-                let idx = Math.round(Math.random() * (array.length - 2));
-                const pair = array.splice(idx, 2);
-                drawArray.splice(1, 0, pair);
-                const elHTML = ` 
-                <div class="card">
-                    <div class="card-content">
-                        ${pair[0].name} vs ${pair[1].name} 
-                    </div>
-                </div>`;
-                const divEl = document.createElement('div');
-                divEl.innerHTML = elHTML;
-                pairs.appendChild(divEl)
-            }
-            console.log(drawArray)
+        function saveTournament(tournament) {
+            const tournaments = utils.read('rows');
+            const tournamentIndex = tournaments.findIndex(value => value.id === id);
+            tournaments[tournamentIndex] = tournament;
+            utils.save('rows', tournaments);
         }
 
-        drawBtn.addEventListener('click', draw)
+
+        const players = tournament.players;
+
+
+        const playersAEl = document.querySelector('#players-a');
+        const playersBEl = document.querySelector('#players-b');
+        const drawBtn = document.querySelector('.button');
+
+        renderPairs(tournament);
+
+        function drawPlayers(players) {
+            const array = [...players];
+            const arrayA = [];
+            const arrayB = [];
+            while (array.length > 0) {
+                const randomPlayerA = pickRandomElementFromList(array);
+                const randomPlayerB = pickRandomElementFromList(array);
+                arrayA.push(randomPlayerA);
+                arrayB.push(randomPlayerB);
+            }
+            return [arrayA, arrayB]
+        }
+
+        function pickRandomElementFromList(array) {
+            let idx = Math.round(Math.random() * (array.length - 1));
+            return array.splice(idx, 1)[0];
+        }
+
+
+
+        function onButtonClick() {
+            tournament.pairs = drawPlayers(players);
+            renderPairs(tournament);
+            saveTournament(tournament);
+        }
+
+        drawBtn.addEventListener('click', onButtonClick)
+
 
 
 
