@@ -46,8 +46,7 @@ module.exports = {
 
         function saveTournament() {
             // tutaj
-            if (tournament.selectedQuestions.qualifications.length === 0 ||
-                tournament.selectedQuestions.quarterFinals.length === 0 ||
+            if (tournament.selectedQuestions.quarterFinals.length === 0 ||
                 tournament.selectedQuestions.semiFinals.length === 0 ||
                 tournament.selectedQuestions.final.length === 0) {
                 window.alert("Nie wszystkie fazy turnieju zawierają pytania!");
@@ -63,14 +62,12 @@ module.exports = {
         function renderLeftColumn() {
             const selectedQuestions = tournament.selectedQuestions;
             const {
-                qualifications,
                 quarterFinals,
                 semiFinals,
                 final
             } = selectedQuestions;
 
             const filteredQ = tournament.questions
-                .filter(value => !qualifications.includes(value))
                 .filter(value => !quarterFinals.includes(value))
                 .filter(value => !semiFinals.includes(value))
                 .filter(value => !final.includes(value));
@@ -125,14 +122,13 @@ module.exports = {
 
 
         tournament.selectedQuestions = tournament.selectedQuestions || {
-            qualifications: [],
             quarterFinals: [],
             semiFinals: [],
             final: [],
         };
 
         renderLeftColumn();
-        selectPhase('qualifications')
+        selectPhase('quarterFinals')
 
         for (const tabButton of tabButtons) {
             tabButton.addEventListener('click', (e) => {
