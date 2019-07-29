@@ -1,0 +1,35 @@
+<section class="hero is-dark is-bold">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title is-1">Nowy turniej</h1>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="field">
+      <label class="label is-large">Nazwa turnieju</label>
+      <div class="control">
+        <input class="input is-large" type="text" placeholder="Nazwa turnieju" id="tournament-name">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label is-large">Zawodnicy</label>
+    </div>
+    <div class="field" id="field"></div>
+    <app-add-player></app-add-player>
+    <div class="field">
+      <label class="label is-large">Pytania</label>
+      <div class="field" id="questions"></div>
+    </div>
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-link is-large" id="submit">Wyślij</button>
+      </div>
+      <div class="control">
+        <button class="button is-text is-large" routerLink="/">Cofnij</button>
+      </div>
+    </div>
+  </div>
+</section>
